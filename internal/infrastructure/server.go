@@ -6,9 +6,9 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 
-	"github.com/crseat/example-data-pipeline/internal/adapters/aerospike"
 	"github.com/crseat/example-data-pipeline/internal/adapters/http"
 	"github.com/crseat/example-data-pipeline/internal/adapters/kafka"
+	"github.com/crseat/example-data-pipeline/internal/adapters/repositories"
 	"github.com/crseat/example-data-pipeline/internal/app"
 )
 
@@ -26,7 +26,7 @@ func StartServer() {
 	defer producer.Close()
 
 	// Initialize Aerospike repository
-	repository, err := aerospike.NewAerospikeRepository(config.AerospikeHost, config.AerospikePort)
+	repository, err := repositories.NewAerospikeRepository(config.AerospikeHost, config.AerospikePort)
 	if err != nil {
 		e.Logger.Fatal(err)
 	}
