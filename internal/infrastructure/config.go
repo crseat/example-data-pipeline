@@ -17,10 +17,10 @@ type Config struct {
 func LoadConfig() *Config {
 	return &Config{
 		ServerPort:     getEnv("SERVER_PORT", ":8080"),
-		KafkaBrokers:   strings.Split(getEnv("KAFKA_BROKER", "kafka:9092"), ","),
+		KafkaBrokers:   strings.Split(getEnv("KAFKA_BROKER", "localhost:9092"), ","),
 		KafkaTopic:     getEnv("KAFKA_TOPIC", "post-topic"),
 		AppEnvironment: getEnv("APP_ENV", "development"),
-		AerospikeHost:  getEnv("AEROSPIKE_HOST", "aerospike"),
+		AerospikeHost:  getEnv("AEROSPIKE_HOST", "localhost"),
 		AerospikePort:  3000,
 	}
 }

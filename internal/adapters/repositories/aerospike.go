@@ -1,7 +1,7 @@
 package repositories
 
 import (
-	"github.com/aerospike/aerospike-client-go"
+	"github.com/aerospike/aerospike-client-go/v7"
 	"github.com/crseat/example-data-pipeline/internal/domain"
 )
 
