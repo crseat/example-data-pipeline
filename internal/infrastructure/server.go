@@ -5,12 +5,23 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"gopkg.in/go-playground/validator.v9"
 
 	"github.com/crseat/example-data-pipeline/internal/adapters/http"
 	"github.com/crseat/example-data-pipeline/internal/adapters/kafka"
 	"github.com/crseat/example-data-pipeline/internal/adapters/repositories"
 	"github.com/crseat/example-data-pipeline/internal/app"
 )
+
+type (
+	CustomValidator struct {
+		validator *validator.Validate
+	}
+)
+
+func (cv *CustomValidator) Validate(i interface{}) error {
+	return cv.validator.Struct(i)
+}
 
 func StartServer() {
 	// Load configuration
@@ -20,6 +31,9 @@ func StartServer() {
 	e := echo.New()
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
+
+	// Register Validator
+	e.Validator = &CustomValidator{validator: validator.New()}
 
 	// Initialize Kafka producer
 	producer := kafka.NewKafkaProducer(config.KafkaBrokers, config.KafkaTopic)

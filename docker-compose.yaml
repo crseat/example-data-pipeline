@@ -1,26 +1,38 @@
 version: '3.7'
 
 services:
-  zookeeper:
-    image: wurstmeister/zookeeper:3.4.6
-    ports:
-      - "2181:2181"
-
   kafka:
-    image: wurstmeister/kafka:2.13-2.6.0
-    ports:
-      - "9092:9092"
+    image: "public.ecr.aws/bitnami/kafka:3.6"
+    platform: linux/amd64
+    healthcheck:
+      test: [ "CMD", "kafka-topics.sh", "--list", "--bootstrap-server", "kafka:9092" ]
+      interval: 10s
+      timeout: 30s
+      retries: 4
+      start_period: 5s
     environment:
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      # KRaft settings
+      - KAFKA_CFG_NODE_ID=0
+      - KAFKA_CFG_PROCESS_ROLES=controller,broker
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka:9093
+      # Listeners
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
 
   aerospike:
     image: aerospike/aerospike-server
     ports:
       - "3000:3000"
+    healthcheck:
+      test: asinfo -h localhost -p 3000 -v status || exit 1
+      #test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 60s
+      retries: 5
 
   app:
     build:
@@ -29,8 +41,8 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - kafka
-      - aerospike
+      kafka:
+        condition: service_healthy
     environment:
       - SERVER_PORT=${SERVER_PORT}
       - KAFKA_BROKER=${KAFKA_BROKER}

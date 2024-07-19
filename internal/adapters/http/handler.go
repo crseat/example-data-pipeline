@@ -4,10 +4,10 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 
 	"github.com/crseat/example-data-pipeline/internal/app"
 	"github.com/crseat/example-data-pipeline/internal/domain"
-	"github.com/labstack/echo/v4/middleware"
 )
 
 type Handler struct {

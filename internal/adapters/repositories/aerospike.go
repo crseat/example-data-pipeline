@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"github.com/aerospike/aerospike-client-go"
 	"github.com/crseat/example-data-pipeline/internal/domain"
 )
 
@@ -8,7 +9,7 @@ type AerospikeRepository struct {
 	client *aerospike.Client
 }
 
-func NewAerospikeRepository(host, port string) (*AerospikeRepository, error) {
+func NewAerospikeRepository(host string, port int) (*AerospikeRepository, error) {
 	client, err := aerospike.NewClient(host, port)
 	if err != nil {
 		return nil, err

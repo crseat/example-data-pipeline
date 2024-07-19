@@ -11,7 +11,7 @@ type Config struct {
 	KafkaTopic     string
 	AppEnvironment string
 	AerospikeHost  string
-	AerospikePort  string
+	AerospikePort  int
 }
 
 func LoadConfig() *Config {
@@ -21,7 +21,7 @@ func LoadConfig() *Config {
 		KafkaTopic:     getEnv("KAFKA_TOPIC", "post-topic"),
 		AppEnvironment: getEnv("APP_ENV", "development"),
 		AerospikeHost:  getEnv("AEROSPIKE_HOST", "aerospike"),
-		AerospikePort:  getEnv("AEROSPIKE_PORT", "3000"),
+		AerospikePort:  3000,
 	}
 }
 
