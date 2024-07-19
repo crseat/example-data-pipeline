@@ -1,5 +1,5 @@
 # Use the official Golang image as a build stage
-FROM golang:1.19 as builder
+FROM golang:1.22 as builder
 
 # Set the Current Working Directory inside the container
 WORKDIR /app
@@ -24,6 +24,8 @@ ENV APP_ENV=production
 ENV SERVER_PORT=:8080
 ENV KAFKA_BROKER=kafka:9092
 ENV KAFKA_TOPIC=post-topic
+ENV AEROSPIKE_HOST=aerospike
+ENV AEROSPIKE_PORT=3000
 
 # Copy the Pre-built binary file from the builder stage
 COPY --from=builder /main /main

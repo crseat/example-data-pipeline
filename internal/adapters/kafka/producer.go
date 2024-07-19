@@ -9,12 +9,12 @@ import (
 	"github.com/crseat/example-data-pipeline/internal/domain"
 )
 
-type KafkaProducer struct {
+type Producer struct {
 	writer *kafka.Writer
 }
 
-func NewKafkaProducer(brokers []string, topic string) *KafkaProducer {
-	return &KafkaProducer{
+func NewKafkaProducer(brokers []string, topic string) *Producer {
+	return &Producer{
 		writer: &kafka.Writer{
 			Addr:     kafka.TCP(brokers...),
 			Topic:    topic,
@@ -23,7 +23,7 @@ func NewKafkaProducer(brokers []string, topic string) *KafkaProducer {
 	}
 }
 
-func (p *KafkaProducer) Produce(postData domain.PostData) error {
+func (p *Producer) Produce(postData domain.PostData) error {
 	message, err := json.Marshal(postData)
 	if err != nil {
 		return err
@@ -34,7 +34,7 @@ func (p *KafkaProducer) Produce(postData domain.PostData) error {
 	})
 }
 
-func (p *KafkaProducer) Close() {
+func (p *Producer) Close() {
 	if err := p.writer.Close(); err != nil {
 		log.Printf("failed to close writer: %v", err)
 	}

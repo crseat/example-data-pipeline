@@ -10,6 +10,8 @@ type Config struct {
 	KafkaBrokers   []string
 	KafkaTopic     string
 	AppEnvironment string
+	AerospikeHost  string
+	AerospikePort  string
 }
 
 func LoadConfig() *Config {
@@ -18,6 +20,8 @@ func LoadConfig() *Config {
 		KafkaBrokers:   strings.Split(getEnv("KAFKA_BROKER", "kafka:9092"), ","),
 		KafkaTopic:     getEnv("KAFKA_TOPIC", "post-topic"),
 		AppEnvironment: getEnv("APP_ENV", "development"),
+		AerospikeHost:  getEnv("AEROSPIKE_HOST", "aerospike"),
+		AerospikePort:  getEnv("AEROSPIKE_PORT", "3000"),
 	}
 }
 
