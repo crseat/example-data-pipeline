@@ -3,16 +3,16 @@ package http
 import (
 	"net/http"
 
-	"github.com/crseat/example-data-pipeline/internal/application"
+	"github.com/crseat/example-data-pipeline/internal/app"
 	"github.com/crseat/example-data-pipeline/internal/domain"
 	"github.com/labstack/echo/v4/middleware"
 )
 
 type Handler struct {
-	service *application.PostService
+	service *app.PostService
 }
 
-func NewHandler(service *application.PostService) *Handler {
+func NewHandler(service *app.PostService) *Handler {
 	return &Handler{service: service}
 }
 

@@ -3,7 +3,7 @@ package infrastructure
 import (
 	"github.com/crseat/example-data-pipeline/internal/adapters/http"
 	"github.com/crseat/example-data-pipeline/internal/adapters/kafka"
-	"github.com/crseat/example-data-pipeline/internal/application"
+	"github.com/crseat/example-data-pipeline/internal/app"
 )
 
 func StartServer() {
@@ -17,7 +17,7 @@ func StartServer() {
 	defer producer.Close()
 
 	// Initialize service
-	service := application.NewPostService(producer)
+	service := app.NewPostService(producer)
 
 	// Initialize handler and register routes
 	handler := http.NewHandler(service)
