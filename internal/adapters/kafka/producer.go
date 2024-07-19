@@ -3,6 +3,7 @@ package kafka
 import (
 	"context"
 	"encoding/json"
+	"github.com/segmentio/kafka-go"
 	"log"
 
 	"github.com/crseat/example-data-pipeline/internal/domain"
