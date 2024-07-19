@@ -1,3 +1,3 @@
-module example-example-data-pipeline
+module example-data-pipeline
 
 go 1.19
