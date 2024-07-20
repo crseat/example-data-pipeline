@@ -54,7 +54,7 @@ Responses:
 `500 Internal Server Error`: If an error occurs during processing.
 
 ## Performance
-Design decisions were made to try and make the server as efficient as possible. Echo was chosen as the web framework due to it's high performance and minimal design. I'm also producing to kafka in batches and consumer in a go routine. I ran load testing on the server use the Vegeta load testing tool and the server is quite performant. With only one kafka topic/partition and the app running in a limited memory container I recieved the following results:
+Design decisions were made to try and make the server as efficient as possible. Echo was chosen as the web framework due to it's high performance and minimal design. I'm also producing to kafka in batches and consuming the messages in a go routine. I ran load testing on the server use the Vegeta load testing tool and the server is quite performant. With only one kafka topic/partition and the app running in a limited memory container I recieved the following results:
 ```
 vegeta attack -rate 0 -duration 10s -targets=target.txt -max-workers 2000 | tee results.bin | vegeta report
 Requests      [total, rate, throughput]         173150, 17315.90, 16486.92
