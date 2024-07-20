@@ -14,15 +14,26 @@ import (
 )
 
 type (
+	// CustomValidator implements the echo.Validator interface for custom validation using the go-playground/validator package.
 	CustomValidator struct {
 		validator *validator.Validate
 	}
 )
 
+// Validate validates the given struct using the custom validator.
 func (cv *CustomValidator) Validate(i interface{}) error {
 	return cv.validator.Struct(i)
 }
 
+// StartServer initializes and starts the web server and Kafka consumer.
+//
+// It performs the following tasks:
+//   - Loads configuration settings from environment variables.
+//   - Sets up an Echo web server with middleware and custom validator.
+//   - Initializes Kafka producer and Aerospike repository.
+//   - Creates and registers HTTP handlers.
+//   - Initializes a Kafka consumer and starts it in a separate goroutine.
+//   - Starts the Echo server and waits for the Kafka consumer goroutine to finish.
 func StartServer() {
 	// Load configuration
 	config := LoadConfig()
@@ -46,7 +57,7 @@ func StartServer() {
 	}
 
 	// Initialize service
-	service := app.NewPostService(producer)
+	service := app.NewProducerService(producer)
 
 	// Initialize handler and register routes
 	handler := http.NewHandler(service)
@@ -54,7 +65,8 @@ func StartServer() {
 
 	// Initialize Kafka consumer
 	consumer := kafka.NewKafkaConsumer(config.KafkaBrokers, config.KafkaTopic, "example-consumer-group")
-	consumerService := app.NewConsumerService(consumer, repository)
+	dltProducer := kafka.NewKafkaProducer(config.KafkaBrokers, config.KafkaDltTopic)
+	consumerService := app.NewConsumerService(consumer, dltProducer, repository)
 
 	// Start Kafka consumer in a separate goroutine
 	var wg sync.WaitGroup

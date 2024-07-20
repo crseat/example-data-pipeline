@@ -1,19 +1,36 @@
 package app
 
-import "github.com/crseat/example-data-pipeline/internal/domain"
+import (
+	"github.com/segmentio/kafka-go"
 
-type PostService struct {
-	producer PostProducer
+	"github.com/crseat/example-data-pipeline/internal/domain"
+)
+
+// ProducerService provides methods for processing post data by writing it to Kafka.
+// It uses a Producer instance to handle the actual communication with Kafka.
+type ProducerService struct {
+	producer Producer
 }
 
-type PostProducer interface {
-	Produce(postData domain.PostData) error
+// Producer defines the methods required for a Producer.
+// Implementations must provide methods to write post data and raw Kafka messages to Kafka.
+type Producer interface {
+	WritePostDataToKafka(postData domain.PostData) error
+	WriteMessageToKafka(message kafka.Message) error
 }
 
-func NewPostService(producer PostProducer) *PostService {
-	return &PostService{producer: producer}
+// NewProducerService creates a new instance of ProducerService with the provided Producer.
+func NewProducerService(producer Producer) *ProducerService {
+	return &ProducerService{producer: producer}
 }
 
-func (s *PostService) ProcessPostData(postData domain.PostData) error {
-	return s.producer.Produce(postData)
+// ProcessPostData writes the given POST data to Kafka for processing.
+func (s *ProducerService) ProcessPostData(postData domain.PostData) error {
+	return s.producer.WritePostDataToKafka(postData)
+}
+
+// SetProducer sets a new Producer instance for the ProducerService.
+// This method is intended only for testing purposes.
+func (s *ProducerService) SetProducer(producer Producer) {
+	s.producer = producer
 }

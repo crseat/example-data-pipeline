@@ -9,7 +9,7 @@ services:
     hostname: kafka
     healthcheck:
       test: [ "CMD", "kafka-topics.sh", "--list", "--bootstrap-server", "kafka:9094" ]
-      interval: 10s
+      interval: 20s
       timeout: 30s
       retries: 4
       start_period: 5s
