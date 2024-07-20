@@ -65,7 +65,7 @@ Bytes Out     [total, mean]                     56793200, 328.00
 Success       [ratio]                           100.00%
 Status Codes  [code:count]                      204:173150
 ```
-17315 requests per second with very limited hardware. In a scaled production environment this could handle many many times that. It also possible that tweaking vegeta settings could produce even better results. 
+17315 requests per second with very limited hardware. In a scaled production environment this could handle many many times that. It's also possible that tweaking vegeta settings could produce even better results. 
 
 ## Work TODO Before Production and Considerations Made
 
