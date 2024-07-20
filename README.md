@@ -13,7 +13,7 @@ The code structure follows hexagonal architecture principles, also known as *por
 ## Components
 
 - **HTTP Server**: Handles HTTP requests and validates incoming data.
-- **Kafka Producer**: Sends processed data to Kafka topics.
+- **Kafka Producer**: Sends POST data to Kafka topics.
 - **Kafka Consumer**: Consumes messages from Kafka and processes them.
 - **Aerospike Repository**: Stores the processed data in an Aerospike database
 
